@@ -47,9 +47,9 @@ Now that you have the YEP Auto-Update running, here is a basic usage guide to he
 
 First off, everything you do to interact with the YEP Auto Update application or script will begin by right-clicking your shiny new Yanfly icon in your system tray. From there you should see something similar to the images below:
 
-![YEP Auto Update: Intervals](https://github.com/nekoyoubi/yep_util/tree/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_interval.png)
-![YEP Auto Update: Notifications](https://github.com/nekoyoubi/yep_util/tree/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_notifications.png)
-![YEP Auto Update: Links](https://github.com/nekoyoubi/yep_util/tree/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_links.png)
+![YEP Auto Update: Intervals](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_interval.png)
+![YEP Auto Update: Notifications](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_notifications.png "YEP Auto Update: Notifications")
+![YEP Auto Update: Links](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_links.png "YEP Auto Update: Links")
 
 Here are the explanations of what you see here:
 
