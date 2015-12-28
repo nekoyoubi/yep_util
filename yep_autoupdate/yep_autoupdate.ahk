@@ -13,7 +13,9 @@ menu, Interval, add, Every 4 Hours, SetInterval4h
 menu, Interval, add, Every 8 Hours, SetInterval8h
 menu, Interval, add, Every 12 Hours, SetInterval12h
 menu, Interval, add, Every 24 Hours, SetInterval24h
+
 menu, Interval, check, Every 12 Hours
+
 menu, tray, add, Set Update Interval, :Interval
 menu, tray, add
 menu, Notifications, add, Notify on Update, NotifyUpdate
@@ -30,10 +32,11 @@ menu, tray, add
 menu, tray, add, Close YEP Auto-Update, CloseAU
 menu, tray, NoStandard
 
+; Set some initial variables.
 auOn := true
 auNotifyUpdate := true
 auNotifyNoUpdate := false
-auRunEvery := 43200000
+auRunEvery := 43200000 ; Defaults to 12-hour updates. If you change this, remember to change the "menu, Interval, check,"-line above.
 
 ; Hour-to-Millisecond translation.
 e1h 	:= 3600000	; 1*60*60*1000
@@ -43,10 +46,13 @@ e8h		:= 28800000	; 8*60*60*1000
 e12h	:= 43200000	; 12*60*60*1000
 e24h	:= 86400000	; 24*60*60*1000
 
+; Sets the initial timer that will handle the YEP auto-updates.
 SetTimer, AutoUpdate, %auRunEvery%
 
+; SUPER(WIN)+Y  --  Runs a manual update of the YEP scripts.
 #y::Gosub, Update
 
+; Handles all the checking, downloading, and installing of the YEP scripts.
 Update:
 {
 	; Checks to make sure the directory listing is accounted for. If not, creates it, and instructs the user on its use.
@@ -72,16 +78,20 @@ Update:
 		}
 	}
 
+	; If the current YEP version is not found, download it.
 	IfNotExist, yep_%updated1%.rar
 	{
 		UrlDownloadToFile, https://www.dropbox.com/s/ihnfafxhvfpq39f/- YEP English -.rar?dl=1, yep_%updated1%.rar
 		FileGetSize, dirsize, yep_dirs.txt
+		; Check for a non-0-byte dirs file. If found, cycle through the directories, extracting the YEP into each.
+		; Otherwise, assume the current directory is a project root, and extract once into its js/plugins.
 		if (dirsize > 0) {
 			Loop, Read, yep_dirs.txt
 				RunWait 7z.exe x yep_%updated1%.rar -aoa -o%A_LoopReadLine%\js\plugins,,hide
 		} else {
 			RunWait 7z.exe x yep_%updated1%.rar -aoa -ojs\plugins,,hide
 		}
+		; Once download and extraction are complete, notify the user that they have a new YEP (if they want to know).
 		if (auNotifyUpdate) {
 			MsgBox,, YEP Auto-Update, YEP successfully updated to version %updated1%., 20
 		}
@@ -89,16 +99,19 @@ Update:
 	}
 }
 
+; Checks if the auto-update is enabled. If so, runs the Update routine. Used by the timer.
 AutoUpdate:
 	if (auOn){
 		Gosub, Update
 	}
 Return
 
+; Activates the update regardless of schedule. Does not reset the timer.
 ManualUpdate:
 	Gosub, Update
 Return
 
+; Toggles whether the auto-update timer will have any effect.
 EnableToggle:
 	menu, tray, togglecheck, Enable YEP Auto-Update
 	auOn := !auOn
@@ -106,6 +119,7 @@ EnableToggle:
 	menu, tray, tip, YEP Auto-Update: %tip%
 Return
 
+; Sets the auto-update timer to 1 hour intervals.
 SetInterval1h:
 	if (auRunEvery == e1h){
 		Return
@@ -121,6 +135,7 @@ SetInterval1h:
 	}
 Return
 
+; Sets the auto-update timer to 2 hour intervals.
 SetInterval2h:
 	if (auRunEvery == e2h){
 		Return
@@ -136,6 +151,7 @@ SetInterval2h:
 	}
 Return
 
+; Sets the auto-update timer to 4 hour intervals.
 SetInterval4h:
 	if (auRunEvery == e4h){
 		Return
@@ -151,6 +167,7 @@ SetInterval4h:
 	}
 Return
 
+; Sets the auto-update timer to 8 hour intervals.
 SetInterval8h:
 	if (auRunEvery == e8h){
 		Return
@@ -166,6 +183,7 @@ SetInterval8h:
 	}
 Return
 
+; Sets the auto-update timer to 12 hour intervals.
 SetInterval12h:
 	if (auRunEvery == e12h){
 		Return
@@ -181,6 +199,7 @@ SetInterval12h:
 	}
 Return
 
+; Sets the auto-update timer to 24 hour intervals.
 SetInterval24h:
 	if (auRunEvery == e24h){
 		Return
@@ -196,32 +215,39 @@ SetInterval24h:
 	}
 Return
 
+; Toggles the notification that there was an update (updated successfully).
 NotifyUpdate:
 	menu, Notifications, togglecheck, Notify on Update
 	auNotifyUpdate := !auNotifyUpdate
 Return
 
+; Toggles the notification that there were no updates (changelog downloaded, but nothing changed).
 NotifyNoUpdate:
 	menu, Notifications, togglecheck, Notify on No Updates
 	auNotifyNoUpdate := !auNotifyNoUpdate
 Return
 
+; The link to Yanfly's YEP page.
 VisitYEP:
 	Run http://yanfly.moe/yep/
 Return
 
+; The link to Yanfly's Patreon page.
 VisitPatreon:
 	Run https://www.patreon.com/Yanfly
 Return
 
+; The link to Yanfly's YouTube channel.
 VisitYouTube:
 	Run https://www.youtube.com/channel/UCxqti0F9VuiSWyqznaua_zA
 Return
 
+; The link to one of the author's sites.
 VisitStitch:
 	Run http://stitchgaming.com/
 Return
 
+; Closes the auto-update application.
 CloseAU:
 	ExitApp
 Return
