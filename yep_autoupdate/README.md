@@ -4,11 +4,18 @@ This AutoHotkey script will give you configurable, scheduled updates to your [Ya
 
 #Installation
 
+YEP Auto-Update uses 7-zip's CLI to extract Yanfly's YEP .rar, so please ensure that you have 7-zip installed. Also, since I'm assuming that you've installed 7-zip fully, the YEP Auto-Update expects `7z.exe` to be accessible from the working directory (in other words, you should make sure 7-zip gets a `PATH` entry).
+
+[7-zip's Download Page](http://www.7-zip.org/download.html)
+
+*Note: If you do not use 7-zip, you may need to do the legwork of finding out what your own commands would be, but I would think with a few small edits to the extraction commands, you can get this to work with just about any archive manager.*
+
 ##Loose Script
 
 To install the YEP Auto-Update via the loose AHK script:
 	1. Download and install AutoHotkey from https://autohotkey.com/
-	2. Download the `yep_autoupdate.ahk` and `yep_yanfly.ico` files above (or just download the entire repo). *Note: I recommend downloading to a "yanfly" folder at the root of your RMMV projects, as that's where the initial yep_dirs.txt will assume you've placed it.*
+	2. Download the `yep_autoupdate.ahk` and `yep_yanfly.ico` files above (or just download the entire repo).
+	*Note: I recommend downloading to a "yanfly" folder at the root of your RMMV projects, as that's where the initial yep_dirs.txt will assume you've placed it.*
 	3. Double-click the `yep_autoupdate.ahk` file from your wherever you decided to download it.
 
 ##Compiled
