@@ -31,13 +31,13 @@ The first time you run the application or script you'll be prompted with the fol
 
 >The file 'yep_dirs.txt' was not found. A new one has been created for you.
 >
->Please ensure that any projects that use YEP are included in this line-delimited path list. YEP updates will be extracted to extracted to these folders' subdirectory, js/plugins, so please only list the root RMMV project folders.
+>Please ensure that any projects that use YEP are included in this line-delimited path list. YEP updates will be extracted to these folders' subdirectory, js/plugins, so please only list the root RMMV project folders.
 >
 >If you are running this from inside your project, simply delete the contents of this file.
 
 The `yep_dirs.txt` file mentioned is created in the same folder as the application or script unless it's being ran in a way that changes its working directory.
 
-You should immediately navigate to this file and edit its default contents...
+You should immediately navigate to this file (there is a menu entry to help) and edit its default contents...
 
 >yep
 >..\SampleProject
@@ -52,21 +52,26 @@ Once you're done editing, save the `yep_dirs.txt` file and you're good to go!
 
 Now that you have the YEP Auto-Update running, here is a basic usage guide to help answer any questions you might have.
 
-First off, everything you do to interact with the YEP Auto Update application or script will begin by right-clicking your shiny new Yanfly icon in your system tray. From there you should see something similar to the images below:
+First off, everything you do to interact with the YEP Auto-Update application or script will begin by right-clicking your shiny new Yanfly icon in your system tray. From there you should see something similar to the images below:
 
-![YEP Auto Update: Intervals](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_interval.png)
-![YEP Auto Update: Notifications](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_notifications.png "YEP Auto Update: Notifications")
-![YEP Auto Update: Links](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_links.png "YEP Auto Update: Links")
+![YEP Auto-Update: Intervals](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_interval.png)
+![YEP Auto-Update: Notifications](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_notifications.png)
+![YEP Auto-Update: Extraction](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_extraction.png)
+![YEP Auto-Update: Links](https://github.com/nekoyoubi/yep_util/raw/master/yep_autoupdate/doc/yep_autoupdate_demo-assets/yep_autoupdate_demo_links.png)
 
 Here are the explanations of what you see here:
 
-* **Manually Update YEP** - This will force an update check at your discretion. You can also get this by pressing `WIN+Y`.
+* **Manually Update YEP** - This will perform an update check at your discretion. You can also get this by pressing `WIN+Y`.
+* **Force YEP Update** - This will force an update regardless of whether you have the latest YEP scripts .rar or not.
 * **Enable YEP Auto-Update** - This toggle will enable or disable whether your updates will come automatically.
 * **Set Update Interval** - Here you can adjust the frequency of update checks. Sadly, only Yanfly can adjust the frequency of updates. ;)
-* **Notifications** - These two options control what message popups you receive. You can turn either of to suit your needs (or both for the silent treatment).
+* **Notifications** - These two options control what message pop-ups you receive. You can turn either off to suit your needs (or both for the silent treatment).
+* **Edit Project Directories** - This will open the `yep_dirs.txt` file for you to edit.
+* **Extraction Tool** - These options control which archive utility you want to use. 7-Zip is fully supported, but there is an experimental option for WinRAR as well.
+*Note: I do not use WinRAR myself, so if you encounter any issues with WinRAR, please let me know as soon as possible.*
 * **Links** - These are just some links that I thought might be relevant for you. Maybe, maybe not. You really should support Yanfly though... seriously.
-* **Close YEP Auto Update** - Does what it says on the tin. Click this, and the application or script will exit.
+* **Close YEP Auto-Update** - Does what it says on the tin. Click this, and the application or script will exit.
 
 #Support
 
-If you have any questions, please feel free to contact me via github or email me at lance@nekoyoubi.com. If you find an issue with the YEP Auto Update, please create an issue for it here, and I'll do my best to see it worked through.
+If you have any questions, please feel free to contact me via github or email me at lance@nekoyoubi.com. If you find an issue with the YEP Auto-Update, please create an issue for it here, and I'll do my best to see it worked through.
