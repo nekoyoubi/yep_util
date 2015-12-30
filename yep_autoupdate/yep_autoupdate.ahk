@@ -1,12 +1,21 @@
+auTitle := "YEP Auto-Update"
+auVersion := 0.9
+auAuthorShort := "Nekoyoubi"
+auAuthorFull := "Lance May (Nekoyoubi)"
+auSupportEmail := "lance@nekoyoubi.com"
+
 #SingleInstance, force
 #Persistent
 
-Menu, Tray, UseErrorLevel
+IniRead, isDev, dev.ini, Config, Dev, 0
+if (!isDev) {
+	Menu, Tray, UseErrorLevel
+}
 menu, tray, icon, yep_yanfly.ico
 menu, tray, add, Manually Update YEP (WIN+Y), ManualUpdate
 menu, tray, add, Force YEP Update, ForceUpdate
 menu, tray, add
-menu, tray, add, Enable YEP Auto-Update, EnableToggle
+menu, tray, add, Enable %auTitle%, EnableToggle
 menu, Interval, add, Every 1 Hour, SetInterval1h
 menu, Interval, add, Every 2 Hours, SetInterval2h
 menu, Interval, add, Every 4 Hours, SetInterval4h
@@ -30,14 +39,17 @@ menu, Links, add, Visit Yanfly's YEP Page on yanfly.moe, VisitYEP
 menu, Links, add, Support Yanfly on Patreon, VisitPatreon
 menu, Links, add, Watch Yanfly's Videos on YouTube, VisitYouTube
 menu, Links, add
-menu, Links, add, Visit Nekoyoubi over at Stitch Gaming, VisitStitch
-menu, tray, add, Links, :Links
+menu, Links, add, Visit %auTitle% on GitHub, VisitGitHub
+menu, Links, add, Visit Nekoyoubi at Stitch Gaming, VisitStitch
+menu, Links, add, Email Nekoyoubi for Support, EmailAuthor
+menu, Links, add
+menu, Links, add, Check for Updates, CheckForUpdates
+menu, tray, add, Links && Support, :Links
 menu, tray, add
-menu, tray, add, Close YEP Auto-Update, CloseAU
+menu, tray, add, Close %auTitle%, CloseAU
 menu, tray, NoStandard
 
 ; Just a developer convenience feature. Enables the compilation of the script from the menu if on the developer's machine.
-IniRead, isDev, dev.ini, Config, Dev, 0
 if (!%A_IsCompiled% && isDev) {
 	menu, tray, add
 	menu, tray, add, Compile Binaries, CompileBinaries
@@ -87,10 +99,10 @@ IfNotExist, yep_dirs.txt
 }
 
 if (auOn) {
-	menu, tray, tip, YEP Auto-Update: On
-	menu, tray, check, Enable YEP Auto-Update
+	menu, tray, tip, %auTitle%: On
+	menu, tray, check, Enable %auTitle%
 } else {
-	menu, tray, tip, YEP Auto-Update: Off
+	menu, tray, tip, %auTitle%: Off
 }
 
 auRunEvery := auInterval*60*60*1000
@@ -127,6 +139,10 @@ if (auExTool = "7zip") {
 
 ; Sets the initial timer that will handle the YEP auto-updates.
 SetTimer, AutoUpdate, %auRunEvery%
+
+; Checks for updates to the YEP Auto-Update at launch.
+Gosub, CheckForUpdates
+
 Return
 
 ; SUPER(WIN)+Y  --  Runs a manual update of the YEP scripts.
@@ -143,7 +159,7 @@ Update:
 	; Based on user feedback, I realized that there may be instances where the %updated1% may be empty,
 	; which would mess everything up, so I added this to at least notify the user that there was an issue.
 	if (updated1 = ) {
-		MsgBox,, YEP Auto-Update, The most recent YEP version could not be found. Please try to visit Yanfly's changelog at http://yanfly.moe/yep/changelog/ and ensure that you can access this page. Also, if you changed the ChangelogURL setting in the config.ini, please make sure that the page referenced is actually Yanfly's changelog., %auNotifyClose%
+		MsgBox,, %auTitle%, The most recent YEP version could not be found. Please try to visit Yanfly's changelog at http://yanfly.moe/yep/changelog/ and ensure that you can access this page. Also, if you changed the ChangelogURL setting in the config.ini, please make sure that the page referenced is actually Yanfly's changelog., %auNotifyClose%
 		Return
 	}
 
@@ -152,7 +168,7 @@ Update:
 		if (auNotifyNoUpdate) {
 			IfExist, yep_%updated1%.rar
 			{
-				MsgBox,, YEP Auto-Update, No update was necessary. YEP already at version %updated1%., %auNotifyClose%
+				MsgBox,, %auTitle%, No update was necessary. YEP already at version %updated1%., %auNotifyClose%
 				Return
 			}
 		}
@@ -186,9 +202,23 @@ Update:
 		}
 		; Once download and extraction are complete, notify the user that they have a new YEP (if they want to know).
 		if (auNotifyUpdate) {
-			MsgBox,, YEP Auto-Update, YEP successfully updated to version %updated1%., %auNotifyClose%
+			MsgBox,, %auTitle%, YEP successfully updated to version %updated1%., %auNotifyClose%
 		}
 	}
+Return
+
+; Check for updates to the YEP Auto-Update.
+CheckForUpdates:
+	; Downloads the latest YEP Auto-Update script to see if it's the most recent.
+	UrlDownloadToFile, https://raw.githubusercontent.com/nekoyoubi/yep_util/master/yep_autoupdate/yep_autoupdate.ahk, cfu.txt
+	FileRead, versioncheck, cfu.txt
+	RegExMatch(versioncheck, "auVersion \:\= (.*?)", cfuv)
+	FileDelete, cfu.txt
+	if (cfuv1 > auVersion) {
+		MsgBox, 4, %auTitle%, You are currently using v%auVersion%, but newer version of the %auTitle% is available (v%cfuv1%). Would you like to visit GitHub to download the newer version?
+	}
+	IfMsgBox, Yes
+		Gosub, VisitGitHub
 Return
 
 ; Checks if the auto-update is enabled. If so, runs the Update routine. Used by the timer.
@@ -210,10 +240,10 @@ Return
 
 ; Toggles whether the auto-update timer will have any effect.
 EnableToggle:
-	menu, tray, togglecheck, Enable YEP Auto-Update
+	menu, tray, togglecheck, Enable %auTitle%
 	auOn := !auOn
 	tip := auOn ? "On" : "Off"
-	menu, tray, tip, YEP Auto-Update: %tip%
+	menu, tray, tip, %auTitle%: %tip%
 	IniWrite, %auOn%, config.ini, Config, AutoUpdateActive
 Return
 
@@ -332,7 +362,7 @@ AddProjectDir:
 		} else {
 			FileAppend,%auAddProject%, yep_dirs.txt
 		}
-		MsgBox,, YEP Auto-Update, %auAddProject%`r`n`r`n... was added to your yep_dirs.txt file., %auNotifyClose%
+		MsgBox,, %auTitle%, %auAddProject%`r`n`r`n... was added to your yep_dirs.txt file., %auNotifyClose%
 	}
 Return
 
@@ -377,9 +407,19 @@ VisitYouTube:
 	Run https://www.youtube.com/channel/UCxqti0F9VuiSWyqznaua_zA
 Return
 
+; The link to the YEP Auto-Update GitHub repository.
+VisitGitHub:
+	Run https://github.com/nekoyoubi/yep_util/tree/master/yep_autoupdate
+Return
+
 ; The link to one of the author's sites.
 VisitStitch:
 	Run http://stitchgaming.com/
+Return
+
+; The link to the YEP Auto-Update GitHub repository.
+EmailAuthor:
+	Run mailto:%auSupportEmail%
 Return
 
 ; Closes the auto-update application.
@@ -391,4 +431,5 @@ Return
 CompileBinaries:
 	RunWait C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %A_WorkingDir%\yep_autoupdate.ahk /out %A_WorkingDir%\bin\yep_autoupdate_32bit.exe /icon %A_WorkingDir%\yep_yanfly.ico /bin "C:\Program Files\AutoHotkey\Compiler\Unicode 32-bit.bin"
 	RunWait C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %A_WorkingDir%\yep_autoupdate.ahk /out %A_WorkingDir%\bin\yep_autoupdate_64bit.exe /icon %A_WorkingDir%\yep_yanfly.ico /bin "C:\Program Files\AutoHotkey\Compiler\Unicode 64-bit.bin"
+	MsgBox,, %auTitle%, Binary compilation complete., %auNotifyClose%
 Return
