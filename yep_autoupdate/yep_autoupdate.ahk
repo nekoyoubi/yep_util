@@ -142,7 +142,7 @@ Update:
 
 	; Based on user feedback, I realized that there may be instances where the %updated1% may be empty,
 	; which would mess everything up, so I added this to at least notify the user that there was an issue.
-	if (%updated1% = ) {
+	if (updated1 = ) {
 		MsgBox,, YEP Auto-Update, The most recent YEP version could not be found. Please try to visit Yanfly's changelog at http://yanfly.moe/yep/changelog/ and ensure that you can access this page. Also, if you changed the ChangelogURL setting in the config.ini, please make sure that the page referenced is actually Yanfly's changelog., %auNotifyClose%
 		Return
 	}
