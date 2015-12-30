@@ -17,10 +17,12 @@ menu, Notifications, add, Notify on Update, NotifyUpdate
 menu, Notifications, add, Notify on No Updates, NotifyNoUpdate
 menu, tray, add, Notifications, :Notifications
 menu, tray, add
-menu, tray, add, Edit Project Directories, EditProjectDirs
 menu, ExtractionTool, add, 7-Zip, SetExTool7zip
 menu, ExtractionTool, add, WinRAR, SetExToolwinrar
 menu, tray, add, Extraction Tool, :ExtractionTool
+menu, tray, add
+menu, tray, add, Edit Project Directories, EditProjectDirs
+menu, tray, add, Edit Config File, EditConfigFile
 menu, tray, add
 menu, Links, add, Visit Yanfly's YEP Page on yanfly.moe, VisitYEP
 menu, Links, add, Support Yanfly on Patreon, VisitPatreon
@@ -51,6 +53,8 @@ IfNotExist, config.ini
 	IniWrite, http://yanfly.moe/yep/changelog/, config.ini, Config, ChangelogURL
 	IniWrite, https://www.dropbox.com/s/ihnfafxhvfpq39f/- YEP English -.rar?dl=1, config.ini, Config, YEPURL
 	IniWrite, 7zip, config.ini, Config, ExtractionTool
+	IniWrite, 7z.exe, config.ini, Config, 7ZipPath
+	IniWrite, unrar.exe, config.ini, Config, WinRARPath
 }
 
 ; Reads in the config file and sets up initial variables.
@@ -62,6 +66,8 @@ IniRead, auNotifyClose, config.ini, Config, NotifyClose, 20
 IniRead, auChangelogURL, config.ini, Config, ChangelogURL, http://yanfly.moe/yep/changelog/
 IniRead, auYEPURL, config.ini, Config, YEPURL, https://www.dropbox.com/s/ihnfafxhvfpq39f/- YEP English -.rar?dl=1
 IniRead, auExTool, config.ini, Config, ExtractionTool, 7zip
+IniRead, au7zPath, config.ini, Config, 7ZipPath, 7z.exe
+IniRead, auUnrarPath, config.ini, Config, WinRARPath, unrar.exe
 
 ; Checks to make sure the directory listing is accounted for. If not, creates it, and instructs the user on its use.
 IfNotExist, yep_dirs.txt
@@ -149,16 +155,16 @@ Update:
 			Loop, Read, yep_dirs.txt
 			{
 				if (auExTool = "7zip") {
-					RunWait 7z.exe x yep_%updated1%.rar -aoa -o%A_LoopReadLine%\js\plugins,,hide
+					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o%A_LoopReadLine%\js\plugins,,hide
 				} else if (auExTool = "winrar"){
-					RunWait unrar.exe x yep_%updated1%.rar -o+ %A_LoopReadLine%\js\plugins,,hide					
+					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ %A_LoopReadLine%\js\plugins,,hide					
 				}
 			}
 		} else {
 				if (auExTool = "7zip") {
-					RunWait 7z.exe x yep_%updated1%.rar -aoa -ojs\plugins,,hide
+					RunWait %au7zPath% x yep_%updated1%.rar -aoa -ojs\plugins,,hide
 				} else if (auExTool = "winrar"){
-					RunWait unrar.exe x yep_%updated1%.rar -o+ js\plugins,,hide					
+					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ js\plugins,,hide					
 				}
 		}
 		; Once download and extraction are complete, notify the user that they have a new YEP (if they want to know).
@@ -303,6 +309,12 @@ EditProjectDirs:
 	Run yep_dirs.txt
 Return
 
+; Opens the config.ini file for editing.
+EditConfigFile:
+	Run config.ini
+Return
+
+; Sets the active extraction tool to 7-Zip
 SetExTool7zip:
 	menu, ExtractionTool, check, 7-Zip
 	menu, ExtractionTool, uncheck, WinRAR
@@ -310,6 +322,7 @@ SetExTool7zip:
 	IniWrite, %auExTool%, config.ini, Config, ExtractionTool
 Return
 
+; Sets the active extraction tool to WinRAR
 SetExToolwinrar:
 	menu, ExtractionTool, uncheck, 7-Zip
 	menu, ExtractionTool, check, WinRAR
