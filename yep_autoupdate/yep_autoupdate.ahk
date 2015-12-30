@@ -1,6 +1,7 @@
 #SingleInstance, force
 #Persistent
 
+Menu, Tray, UseErrorLevel
 menu, tray, icon, yep_yanfly.ico
 menu, tray, add, Manually Update YEP (WIN+Y), ManualUpdate
 menu, tray, add, Force YEP Update, ForceUpdate
@@ -34,6 +35,13 @@ menu, tray, add, Links, :Links
 menu, tray, add
 menu, tray, add, Close YEP Auto-Update, CloseAU
 menu, tray, NoStandard
+
+; Just a developer convenience feature. Enables the compilation of the script from the menu if on the developer's machine.
+IniRead, isDev, dev.ini, Config, Dev, 0
+if (!%A_IsCompiled% && isDev) {
+	menu, tray, add
+	menu, tray, add, Compile Binaries, CompileBinaries
+}
 
 ; Hour-to-Millisecond translation.
 e1h 	:= 3600000	; 1*60*60*1000
@@ -131,6 +139,13 @@ Update:
 	FileRead, changelog, changelog.txt
 	RegExMatch(changelog, "Plugin Updates as of Launch Date to .*?\<strong\>(.*?)\<\/strong\>\<\/span\>\~", updated)
 	FileDelete, changelog.txt
+
+	; Based on user feedback, I realized that there may be instances where the %updated1% may be empty,
+	; which would mess everything up, so I added this to at least notify the user that there was an issue.
+	if (%updated1% = ) {
+		MsgBox,, YEP Auto-Update, The most recent YEP version could not be found. Please try to visit Yanfly's changelog at http://yanfly.moe/yep/changelog/ and ensure that you can access this page. Also, if you changed the ChangelogURL setting in the config.ini, please make sure that the page referenced is actually Yanfly's changelog., %auNotifyClose%
+		Return
+	}
 
 	; Notifies the user if an update was not found (message box self-closes after 20 seconds).
 	if (!auForceUpdate) {	
@@ -370,4 +385,10 @@ Return
 ; Closes the auto-update application.
 CloseAU:
 	ExitApp
+Return
+
+; Compiles the current loose script into 32/64-bit binaries. (Just a convenience feature for the author. Feel free to disregard.)
+CompileBinaries:
+	RunWait C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %A_WorkingDir%\yep_autoupdate.ahk /out %A_WorkingDir%\bin\yep_autoupdate_32bit.exe /icon %A_WorkingDir%\yep_yanfly.ico /bin "C:\Program Files\AutoHotkey\Compiler\Unicode 32-bit.bin"
+	RunWait C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe /in %A_WorkingDir%\yep_autoupdate.ahk /out %A_WorkingDir%\bin\yep_autoupdate_64bit.exe /icon %A_WorkingDir%\yep_yanfly.ico /bin "C:\Program Files\AutoHotkey\Compiler\Unicode 64-bit.bin"
 Return
