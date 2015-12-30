@@ -13,16 +13,18 @@ YEP Auto-Update uses 7-Zip's or WinRAR's CLI to extract Yanfly's YEP .rar, so pl
 ##Loose Script
 
 To install the YEP Auto-Update via the loose AHK script:
-	1. Download and install AutoHotkey from https://autohotkey.com/
-	2. Download the `yep_autoupdate.ahk` and `yep_yanfly.ico` files above (or just download the entire repo).
-	3. Double-click the `yep_autoupdate.ahk` file from your wherever you decided to download it.
+
+1. Download and install AutoHotkey from https://autohotkey.com/  
+2. Download the `yep_autoupdate.ahk` and `yep_yanfly.ico` files above (or just download the entire repo).  
+3. Double-click the `yep_autoupdate.ahk` file from your wherever you decided to download it.  
 
 ##Compiled
 
 There is no real installation for the compiled YEP Auto-Update.
-	1. Navigate to the `/bin/` folder above.
-	2. Download your processor-appropriate version (32/64-bit).
-	3. Run the `.exe`
+
+1. Navigate to the `/bin/` folder above.  
+2. Download your processor-appropriate version (32/64-bit).  
+3. Run the `.exe`  
 
 ##Setup
 
@@ -34,9 +36,9 @@ If you are **not** running the YEP Auto-Update from an RVVM's project root, you 
 
 The `yep_dirs.txt` file is a line-delimited list of project roots to extract the YEP to. A sample of this file might look something like:
 
->yep
->..\SampleProject
->C:\Projects\MyGame
+>yep  
+>..\SampleProject  
+>C:\Projects\MyGame  
 
 *Note: The `yep` entry is there to keep a copy of the `js/plugins` changes made, so that a new project installation can be made simpler by copying and pasting the contents of this `yep` folder. This is only an example though, and is not needed by any means.*
 
@@ -53,18 +55,18 @@ First off, everything you do to interact with the YEP Auto-Update application or
 
 Here are the explanations of what you see here:
 
-* **Manually Update YEP** - This will perform an update check at your discretion. You can also get this by pressing `WIN+Y`.
-* **Force YEP Update** - This will force an update regardless of whether you have the latest YEP scripts .rar or not.
-* **Enable YEP Auto-Update** - This toggle will enable or disable whether your updates will come automatically.
-* **Set Update Interval** - Here you can adjust the frequency of update checks. Sadly, only Yanfly can adjust the frequency of updates. ;)
-* **Notifications** - These two options control what message pop-ups you receive. You can turn either off to suit your needs (or both for the silent treatment).
-* **Add Project Directory** - This will open a visual directory selection dialog. Navigate to your project's root folder and then confirm.
-* **Edit Project Directories** - This will open the `yep_dirs.txt` file for you to edit.
-* **Edit Config File** - This will open the `config.ini` file for you to edit.
-* **Extraction Tool** - These options control which archive utility you want to use. 7-Zip is fully supported, but there is an experimental option for WinRAR as well.
-*Note: I do not use WinRAR myself, so if you encounter any issues with WinRAR, please let me know as soon as possible.*
-* **Links** - These are just some links that I thought might be relevant for you. Maybe, maybe not. You really should support Yanfly though... seriously.
-* **Close YEP Auto-Update** - Does what it says on the tin. Click this, and the application or script will exit.
+* **Manually Update YEP** - This will perform an update check at your discretion. You can also get this by pressing `WIN+Y`.  
+* **Force YEP Update** - This will force an update regardless of whether you have the latest YEP scripts .rar or not.  
+* **Enable YEP Auto-Update** - This toggle will enable or disable whether your updates will come automatically.  
+* **Set Update Interval** - Here you can adjust the frequency of update checks. Sadly, only Yanfly can adjust the frequency of updates. ;)  
+* **Notifications** - These two options control what message pop-ups you receive. You can turn either off to suit your needs (or both for the silent treatment).  
+* **Add Project Directory** - This will open a visual directory selection dialog. Navigate to your project's root folder and then confirm.  
+* **Edit Project Directories** - This will open the `yep_dirs.txt` file for you to edit.  
+* **Edit Config File** - This will open the `config.ini` file for you to edit.  
+* **Extraction Tool** - These options control which archive utility you want to use. 7-Zip is fully supported, but there is an experimental option for WinRAR as well.  
+*Note: I do not use WinRAR myself, so if you encounter any issues with WinRAR, please let me know as soon as possible.*  
+* **Links** - These are just some links that I thought might be relevant for you. Maybe, maybe not. You really should support Yanfly though... seriously.  
+* **Close YEP Auto-Update** - Does what it says on the tin. Click this, and the application or script will exit.  
 
 #Support
 
