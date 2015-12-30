@@ -21,6 +21,7 @@ menu, ExtractionTool, add, 7-Zip, SetExTool7zip
 menu, ExtractionTool, add, WinRAR, SetExToolwinrar
 menu, tray, add, Extraction Tool, :ExtractionTool
 menu, tray, add
+menu, tray, add, Add Project Directory, AddProjectDir
 menu, tray, add, Edit Project Directories, EditProjectDirs
 menu, tray, add, Edit Config File, EditConfigFile
 menu, tray, add
@@ -72,8 +73,9 @@ IniRead, auUnrarPath, config.ini, Config, WinRARPath, unrar.exe
 ; Checks to make sure the directory listing is accounted for. If not, creates it, and instructs the user on its use.
 IfNotExist, yep_dirs.txt
 {
-	FileAppend, yep`r`n..\SampleProject, yep_dirs.txt
-	MsgBox,, YEP Auto-Update, The file 'yep_dirs.txt' was not found. A new one has been created for you.`r`n`r`nPlease ensure that any projects that use YEP are included in this line-delimited path list. YEP updates will be extracted to these folders' subdirectory, js/plugins, so please only list the root RMMV project folders.`r`n`r`nIf you are running this from inside your project, simply delete the contents of this file.
+	FileAppend,, yep_dirs.txt
+	IfNotExist, *.rpgproject
+		Gosub, AddProjectDir
 }
 
 if (auOn) {
@@ -302,6 +304,21 @@ NotifyNoUpdate:
 	menu, Notifications, togglecheck, Notify on No Updates
 	auNotifyNoUpdate := !auNotifyNoUpdate
 	IniWrite, %auNotifyNoUpdate%, config.ini, Config, NotifyNoUpdate
+Return
+
+; Allows the user to add RMMV project directories with a handy-dandy visual dialog.
+AddProjectDir:
+	FileSelectFolder, auAddProject, *%A_WorkingDir%, 1, Please select your RMMV project's root folder...
+	if auAddProject !=
+	{
+		FileGetSize, auDirsSize, yep_dirs.txt
+		if (auDirsSize > 0) {
+			FileAppend,`r`n%auAddProject%, yep_dirs.txt
+		} else {
+			FileAppend,%auAddProject%, yep_dirs.txt
+		}
+		MsgBox,, YEP Auto-Update, %auAddProject%`r`n`r`n... was added to your yep_dirs.txt file., %auNotifyClose%
+	}
 Return
 
 ; Opens the yep_dirs.txt file for editing.
