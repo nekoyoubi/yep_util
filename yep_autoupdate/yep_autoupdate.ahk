@@ -1,5 +1,5 @@
 auTitle := "YEP Auto-Update"
-auVersion := 0.10
+auVersion := 0.11
 auAuthorShort := "Nekoyoubi"
 auAuthorFull := "Lance May (Nekoyoubi)"
 auSupportEmail := "lance@nekoyoubi.com"
