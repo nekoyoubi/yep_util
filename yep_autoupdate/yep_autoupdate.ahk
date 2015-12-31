@@ -1,5 +1,5 @@
 auTitle := "YEP Auto-Update"
-auVersion := 0.9
+auVersion := 0.10
 auAuthorShort := "Nekoyoubi"
 auAuthorFull := "Lance May (Nekoyoubi)"
 auSupportEmail := "lance@nekoyoubi.com"
@@ -40,8 +40,8 @@ menu, Links, add, Support Yanfly on Patreon, VisitPatreon
 menu, Links, add, Watch Yanfly's Videos on YouTube, VisitYouTube
 menu, Links, add
 menu, Links, add, Visit %auTitle% on GitHub, VisitGitHub
-menu, Links, add, Visit Nekoyoubi at Stitch Gaming, VisitStitch
-menu, Links, add, Email Nekoyoubi for Support, EmailAuthor
+menu, Links, add, Visit %auAuthorShort% at Stitch Gaming, VisitStitch
+menu, Links, add, Email %auAuthorShort% for Support, EmailAuthor
 menu, Links, add
 menu, Links, add, Check for Updates, CheckForUpdates
 menu, tray, add, Links && Support, :Links
@@ -62,6 +62,28 @@ e4h 	:= 14400000	; 4*60*60*1000
 e8h		:= 28800000	; 8*60*60*1000
 e12h	:= 43200000	; 12*60*60*1000
 e24h	:= 86400000	; 24*60*60*1000
+
+; Detect WinRAR
+RegRead, auHasWinRAR, HKLM, SOFTWARE\WinRAR, EXE32
+if (ErrorLevel) {
+	RegRead, auHasWinRAR, HKLM, SOFTWARE\WinRAR, EXE64
+} 
+if (ErrorLevel) {
+	RegRead, auHas7Zip, HKLM, SOFTWARE\7-Zip, Path
+}
+
+; Yes, the double ifs are an intentional fall-through.
+if (auHasWinRAR) {
+	auInstalledExTool = winrar
+}
+if (auHas7Zip) {
+	auInstalledExTool = 7zip
+}
+if (auInstalledExTool = ) {
+	MsgBox, 4, %auTitle%, %auTitle% could not determine what archive tool you have installed. Would you like to download 7-Zip now?
+	IfMsgBox, Yes
+		Run http://www.7-zip.org/download.html
+}
 
 ; Reads config file; if none exists, writes the initial.
 IfNotExist, config.ini
@@ -188,16 +210,16 @@ Update:
 			Loop, Read, yep_dirs.txt
 			{
 				if (auExTool = "7zip") {
-					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o%A_LoopReadLine%\js\plugins,,hide
+					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o"%A_LoopReadLine%\js\plugins",,hide
 				} else if (auExTool = "winrar"){
-					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ %A_LoopReadLine%\js\plugins,,hide					
+					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ "%A_LoopReadLine%\js\plugins",,hide					
 				}
 			}
 		} else {
 				if (auExTool = "7zip") {
-					RunWait %au7zPath% x yep_%updated1%.rar -aoa -ojs\plugins,,hide
+					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o"js\plugins",,hide
 				} else if (auExTool = "winrar"){
-					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ js\plugins,,hide					
+					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ "js\plugins",,hide					
 				}
 		}
 		; Once download and extraction are complete, notify the user that they have a new YEP (if they want to know).
