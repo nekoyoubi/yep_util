@@ -210,16 +210,16 @@ Update:
 			Loop, Read, yep_dirs.txt
 			{
 				if (auExTool = "7zip") {
-					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o"%A_LoopReadLine%\js\plugins",,hide
+					RunWait "%au7zPath%" x yep_%updated1%.rar -aoa -o"%A_LoopReadLine%\js\plugins",,hide
 				} else if (auExTool = "winrar"){
-					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ "%A_LoopReadLine%\js\plugins",,hide					
+					RunWait "%auUnrarPath%" x yep_%updated1%.rar -o+ -y "%A_LoopReadLine%\js\plugins\",,hide					
 				}
 			}
 		} else {
 				if (auExTool = "7zip") {
-					RunWait %au7zPath% x yep_%updated1%.rar -aoa -o"js\plugins",,hide
+					RunWait "%au7zPath%" x yep_%updated1%.rar -aoa -o"js\plugins",,hide
 				} else if (auExTool = "winrar"){
-					RunWait %auUnrarPath% x yep_%updated1%.rar -o+ "js\plugins",,hide					
+					RunWait "%auUnrarPath%" x yep_%updated1%.rar -o+ -y "js\plugins\",,hide					
 				}
 		}
 		; Once download and extraction are complete, notify the user that they have a new YEP (if they want to know).
