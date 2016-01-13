@@ -1,5 +1,5 @@
 auTitle := "YEP Auto-Update"
-auVersion := 0.11
+auVersion := 0.12
 auAuthorShort := "Nekoyoubi"
 auAuthorFull := "Lance May (Nekoyoubi)"
 auSupportEmail := "lance@nekoyoubi.com"
@@ -202,6 +202,11 @@ Update:
 	; If the current YEP version is not found, download it.
 	IfNotExist, yep_%updated1%.rar
 	{
+		; Get any changes to the extraction tool from config.ini
+		IniRead, auExTool, config.ini, Config, ExtractionTool, 7zip
+		IniRead, au7zPath, config.ini, Config, 7ZipPath, 7z.exe
+		IniRead, auUnrarPath, config.ini, Config, WinRARPath, unrar.exe
+		; Download the new YEP archive
 		UrlDownloadToFile, %auYEPURL%, yep_%updated1%.rar
 		FileGetSize, dirsize, yep_dirs.txt
 		; Check for a non-0-byte dirs file. If found, cycle through the directories, extracting the YEP into each.

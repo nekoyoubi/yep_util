@@ -9,3 +9,4 @@ yep_autosort/yep_autosort_projects.txt
 yep_autoupdate/config.ini
 *.sublime-project
 *.sublime-workspace
+yep_autosort/dev.ini
